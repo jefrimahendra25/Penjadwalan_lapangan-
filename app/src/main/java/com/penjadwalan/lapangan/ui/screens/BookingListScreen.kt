@@ -241,7 +241,7 @@ fun BookingCard(
                                 Icon(Icons.Default.Cancel, contentDescription = null)
                             }
                         )
-                        HorizontalDivider()
+                        Divider()
                         DropdownMenuItem(
                             text = { Text("Hapus", color = MaterialTheme.colorScheme.error) },
                             onClick = {

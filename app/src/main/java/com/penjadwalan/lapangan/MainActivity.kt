@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,10 +50,10 @@ fun PenjadwalanNavHost(
 ) {
     val application = androidx.compose.ui.platform.LocalContext.current.applicationContext as PenjadwalanApplication
     val fieldViewModel: FieldViewModel = viewModel(
-        factory = FieldViewModelFactory(application.fieldRepository)
+        factory = FieldViewModel.Factory(application.fieldRepository)
     )
     val bookingViewModel: BookingViewModel = viewModel(
-        factory = BookingViewModelFactory(application.bookingRepository)
+        factory = BookingViewModel.Factory(application.bookingRepository)
     )
     
     NavHost(

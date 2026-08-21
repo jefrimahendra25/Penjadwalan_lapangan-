@@ -393,6 +393,7 @@ fun BookingDialog(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDialog(
     onDateSelected: (Date) -> Unit,

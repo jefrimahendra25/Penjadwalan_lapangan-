@@ -1,6 +1,7 @@
 package com.penjadwalan.lapangan.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.penjadwalan.lapangan.data.Booking
 import com.penjadwalan.lapangan.data.BookingRepository
@@ -165,6 +166,14 @@ class BookingViewModel(private val repository: BookingRepository) : ViewModel() 
         }
     }
     
+    fun getBookingsByStatus(status: BookingStatus) {
+        viewModelScope.launch {
+            repository.getBookingsByStatus(status).collect { bookingList ->
+                _bookings.value = bookingList
+            }
+        }
+    }
+    
     companion object {
         fun getTodayDate(): String {
             val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -181,6 +190,18 @@ class BookingViewModel(private val repository: BookingRepository) : ViewModel() 
             val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
             val date = inputFormat.parse(dateString)
             return outputFormat.format(date ?: Date())
+        }
+        
+        fun Factory(repository: BookingRepository): ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    if (modelClass.isAssignableFrom(BookingViewModel::class.java)) {
+                        return BookingViewModel(repository) as T
+                    }
+                    throw IllegalArgumentException("Unknown ViewModel class")
+                }
+            }
         }
     }
 }

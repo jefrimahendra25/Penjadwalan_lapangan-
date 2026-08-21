@@ -1,6 +1,7 @@
 package com.penjadwalan.lapangan.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.penjadwalan.lapangan.data.Field
 import com.penjadwalan.lapangan.data.FieldRepository
@@ -63,6 +64,22 @@ class FieldViewModel(private val repository: FieldRepository) : ViewModel() {
     fun deleteField(field: Field) {
         viewModelScope.launch {
             repository.deleteField(field)
+        }
+    }
+    
+    suspend fun getFieldById(fieldId: Long): Field? = repository.getFieldById(fieldId)
+    
+    companion object {
+        fun Factory(repository: FieldRepository): ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    if (modelClass.isAssignableFrom(FieldViewModel::class.java)) {
+                        return FieldViewModel(repository) as T
+                    }
+                    throw IllegalArgumentException("Unknown ViewModel class")
+                }
+            }
         }
     }
 }
